@@ -1,1 +1,1 @@
-# GAN-test
+# GAN-102CategoryFlower

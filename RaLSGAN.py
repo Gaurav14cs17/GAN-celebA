@@ -97,7 +97,6 @@ class RaLSGAN(object):
 
         self.inputs = tf.placeholder(
             tf.float32, [self.batch_size] + image_dims, name='real_images')
-
         inputs = self.inputs
 
         self.z = tf.placeholder(tf.float32, [None, self.z_dim], name='z')
@@ -210,7 +209,6 @@ class RaLSGAN(object):
                 batch_images = np.array(batch).astype(np.float32)
                 batch_labels = self.data_y[idx * config.batch_size:
                                            (idx + 1) * config.batch_size]
-
                 batch_z = np.random.uniform(-1, 1,
                                             [config.batch_size, self.z_dim]).astype(np.float32)
 

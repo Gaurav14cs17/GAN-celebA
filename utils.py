@@ -103,22 +103,22 @@ def inverse_transform(images):
     return (images + 1.) / 2.
 
 
-def visualize(sess, dcgan, config):
+def visualize(sess, gan, config):
     image_frame_dim_h = 8
     image_frame_dim_w = 8
     values = np.arange(0, 1, 1. / config.batch_size)
     for idx in xrange(100):
         print(" [*] %d" % idx)
-        z_sample = np.zeros([config.batch_size, dcgan.z_dim])
+        z_sample = np.zeros([config.batch_size, gan.z_dim])
         for kdx, z in enumerate(z_sample):
             z[idx] = values[kdx]
 
-        y = np.random.choice(102, (config.batch_size,1))
-        y = y/51 - 1
+        y = np.random.choice(102, (config.batch_size, 1))
+        y = y / 51 - 1
         y = np.asarray(y)
 
-        samples = sess.run(dcgan.sampler, feed_dict={
-            dcgan.z: z_sample, dcgan.y: y})
+        samples = sess.run(gan.sampler, feed_dict={
+                           gan.z: z_sample, gan.y: y})
 
         save_images(samples, [image_frame_dim_h, image_frame_dim_w],
                     './samples/test_arange_%s.png' % (idx))

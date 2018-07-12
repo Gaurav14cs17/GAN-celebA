@@ -2,13 +2,13 @@ import os
 import scipy.misc
 import numpy as np
 
-from model import DCGAN
+from RaLSGAN import RaLSGAN
 from utils import pp, visualize, show_all_variables
 
 import tensorflow as tf
 
 flags = tf.app.flags
-flags.DEFINE_integer("epoch", 200, "Epoch to train [25]")
+flags.DEFINE_integer("epoch", 100, "Epoch to train [100]")
 flags.DEFINE_float("learning_rate", 0.0002,
                    "Learning rate of for adam [0.0002]")
 flags.DEFINE_float("beta1", 0.5, "Momentum term of adam [0.5]")
@@ -28,8 +28,8 @@ flags.DEFINE_integer(
     "output_width",
     None,
     "The size of the output images to produce. If None, same value as output_height [None]")
-flags.DEFINE_string("dataset", "celebA",
-                    "The name of dataset [celebA, mnist, lsun]")
+flags.DEFINE_string("dataset", "102CategoryFlower",
+                    "The name of dataset [102CategoryFlower, celebA, lsun]")
 flags.DEFINE_string("input_fname_pattern", "*.jpg",
                     "Glob pattern of filename of input images [*]")
 flags.DEFINE_string("checkpoint_dir", "checkpoint",
@@ -37,9 +37,9 @@ flags.DEFINE_string("checkpoint_dir", "checkpoint",
 flags.DEFINE_string("sample_dir", "samples",
                     "Directory name to save the image samples [samples]")
 flags.DEFINE_boolean(
-    "train", False, "True for training, False for testing [False]")
+    "train", True, "True for training, False for testing [True]")
 flags.DEFINE_boolean(
-    "crop", False, "True for training, False for testing [False]")
+    "crop", True, "True for training, False for testing [True]")
 flags.DEFINE_boolean("visualize", False,
                      "True for visualizing, False for nothing [False]")
 FLAGS = flags.FLAGS
@@ -63,7 +63,7 @@ def main(_):
     run_config.gpu_options.allow_growth = True
 
     with tf.Session(config=run_config) as sess:
-        dcgan = DCGAN(
+        gan = RaLSGAN(
             sess,
             input_width=FLAGS.input_width,
             input_height=FLAGS.input_height,
@@ -81,12 +81,12 @@ def main(_):
         show_all_variables()
 
         if FLAGS.train:
-            dcgan.train(FLAGS)
+            gan.train(FLAGS)
         else:
-            if not dcgan.load(FLAGS.checkpoint_dir)[0]:
+            if not gan.load(FLAGS.checkpoint_dir)[0]:
                 raise Exception("[!] Train a model first, then run test mode")
 
-        visualize(sess, dcgan, FLAGS)
+        visualize(sess, gan, FLAGS)
 
 
 if __name__ == '__main__':

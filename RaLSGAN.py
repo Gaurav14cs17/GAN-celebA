@@ -25,7 +25,7 @@ class RaLSGAN(object):
             output_height=128,
             output_width=128,
             y_dim=1,
-            z_dim=100,
+            z_dim=256,
             gf_dim=64,
             df_dim=64,
             gfc_dim=1024,
@@ -40,7 +40,7 @@ class RaLSGAN(object):
           sess: TensorFlow session
           batch_size: The size of batch. Should be specified before training.
           y_dim: (optional) Dimension of dim for y. [None]
-          z_dim: (optional) Dimension of dim for Z. [100]
+          z_dim: (optional) Dimension of dim for Z. [200]
           gf_dim: (optional) Dimension of gen filters in first conv layer. [64]
           df_dim: (optional) Dimension of discrim filters in first conv layer. [64]
           gfc_dim: (optional) Dimension of gen units for for fully connected layer. [1024]

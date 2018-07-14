@@ -94,7 +94,6 @@ def discriminator(image, label=None, batch_size=64, reuse=False):
 
         h5 = linear(h4, 1024, 'd_h5_lin')
         h5 = lrelu(h5)
-        h5 = concat([h5, label], 1)
 
         h6 = linear(h5, 1, 'd_h6_lin')
 

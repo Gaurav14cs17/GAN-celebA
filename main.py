@@ -2,7 +2,7 @@ import os
 import scipy.misc
 import numpy as np
 
-from RaLSGAN import RaLSGAN
+from GAN import GAN
 from utils import pp, visualize, show_all_variables
 
 import tensorflow as tf
@@ -63,7 +63,7 @@ def main(_):
     run_config.gpu_options.allow_growth = True
 
     with tf.Session(config=run_config) as sess:
-        gan = RaLSGAN(
+        gan = GAN(
             sess,
             input_width=FLAGS.input_width,
             input_height=FLAGS.input_height,

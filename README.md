@@ -16,7 +16,8 @@ fc,8\*8\*256,BN|5\*5 conv,64,st.2
 l2 loss|
 
 ## Loss functions
-![loss functions](assets/loss_functions.png)
+![d loss](assets/d_loss.png)
+![g loss](assets/g_loss.png)
 
 ## Prerequisites
 

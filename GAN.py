@@ -66,12 +66,6 @@ class GAN(object):
         self.build_model()
 
     def build_model(self):
-        if self.y_dim:
-            self.y = tf.placeholder(
-                tf.float32, [self.batch_size, self.y_dim], name='y')
-        else:
-            self.y = None
-
         if self.crop:
             image_dims = [self.output_height, self.output_width, self.c_dim]
         else:

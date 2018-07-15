@@ -1,7 +1,9 @@
 # GAN-celebA
+
 Tensorflow implementation of GAN in Dataset [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html).
 
 ## Model architecture
+
 Generator|Discriminator
 ---------|-------------
 z, 256|x, 128\*128\*3
@@ -16,6 +18,7 @@ fc, 8\*8\*256, BN|5\*5 conv, 64, st.2
 l2 loss|
 
 ## Loss functions
+
 ![d loss](assets/d_loss.png)
 ![g loss](assets/g_loss.png)
 
@@ -27,16 +30,19 @@ l2 loss|
 - [pillow](https://github.com/python-pillow/Pillow)
 
 ## Usage
+
 To train a model with dataset CelebA:
  ```
  $ python main.py
  ```
+
 To test with an existing model:
  ```
  $ python main.py --train=False
  ```
 
 ## Results
+
 After 10th epoch:
 ![result1]()
 After 20th epoch:
@@ -46,6 +52,7 @@ After 30th epoch:
 
 
 ## Folder structure
+
 The following shows basic folder structure.
 ```
 ├── main.py # gateway
@@ -64,4 +71,5 @@ The following shows basic folder structure.
 ```
 
 ## Author
+
 Cong Yu / [@congyucn](https://github.com/congyucn)

@@ -17,19 +17,14 @@ class GAN(object):
     def __init__(
             self,
             sess,
-            input_height=450,
-            input_width=450,
+            input_height=128,
+            input_width=128,
             crop=True,
             batch_size=64,
             sample_num=64,
             output_height=128,
             output_width=128,
-            y_dim=1,
             z_dim=256,
-            gf_dim=64,
-            df_dim=64,
-            gfc_dim=1024,
-            dfc_dim=1024,
             c_dim=3,
             dataset_name='default',
             input_fname_pattern='*.jpg',
@@ -40,11 +35,7 @@ class GAN(object):
           sess: TensorFlow session
           batch_size: The size of batch. Should be specified before training.
           y_dim: (optional) Dimension of dim for y. [None]
-          z_dim: (optional) Dimension of dim for Z. [200]
-          gf_dim: (optional) Dimension of gen filters in first conv layer. [64]
-          df_dim: (optional) Dimension of discrim filters in first conv layer. [64]
-          gfc_dim: (optional) Dimension of gen units for for fully connected layer. [1024]
-          dfc_dim: (optional) Dimension of discrim units for fully connected layer. [1024]
+          z_dim: (optional) Dimension of dim for Z. [256]
           c_dim: (optional) Dimension of image color. For grayscale input, set to 1. [3]
         """
         self.sess = sess
@@ -58,15 +49,8 @@ class GAN(object):
         self.output_height = output_height
         self.output_width = output_width
 
-        self.y_dim = y_dim
         self.z_dim = z_dim
         self.c_dim = c_dim
-
-        self.gf_dim = gf_dim
-        self.df_dim = df_dim
-
-        self.gfc_dim = gfc_dim
-        self.dfc_dim = dfc_dim
 
         self.dataset_name = dataset_name
         self.input_fname_pattern = input_fname_pattern
@@ -78,8 +62,6 @@ class GAN(object):
         seed = 547
         np.random.seed(seed)
         np.random.shuffle(self.data)
-
-        self.data_y = self.load_labels()
 
         self.build_model()
 
@@ -100,14 +82,12 @@ class GAN(object):
         inputs = self.inputs
 
         self.z = tf.placeholder(tf.float32, [None, self.z_dim], name='z')
-        self.G = generator(self.z, self.y)
+        self.G = generator(self.z)
 
-        self.D_real, self.D_real_logits = discriminator(
-            inputs, self.y, reuse=False)
-        self.D_fake, self.D_fake_logits = discriminator(
-            self.G, self.y, reuse=True)
+        self.D_real, self.D_real_logits = discriminator(inputs, reuse=False)
+        self.D_fake, self.D_fake_logits = discriminator(self.G, reuse=True)
 
-        self.sampler = sampler(self.z, self.y)
+        self.sampler = sampler(self.z)
 
         """loss function"""
         # d_loss
@@ -172,7 +152,6 @@ class GAN(object):
                 resize_width=self.output_width,
                 crop=self.crop) for sample_file in sample_files]
         sample_inputs = np.array(sample).astype(np.float32)
-        sample_labels = self.data_y[0:self.sample_num]
 
         counter = 1
         start_time = time.time()
@@ -207,33 +186,31 @@ class GAN(object):
                         resize_width=self.output_width,
                         crop=self.crop) for batch_file in batch_files]
                 batch_images = np.array(batch).astype(np.float32)
-                batch_labels = self.data_y[idx * config.batch_size:
-                                           (idx + 1) * config.batch_size]
                 batch_z = np.random.uniform(-1, 1,
                                             [config.batch_size, self.z_dim]).astype(np.float32)
 
                 # Update D network
                 _, summary_str = self.sess.run([d_optim, self.d_sum], feed_dict={
-                    self.inputs: batch_images, self.z: batch_z, self.y: batch_labels})
+                    self.inputs: batch_images, self.z: batch_z})
                 self.writer.add_summary(summary_str, counter)
 
                 # Update G network
                 _, summary_str = self.sess.run([g_optim, self.g_sum], feed_dict={
-                                               self.inputs: batch_images, self.z: batch_z, self.y: batch_labels})
+                                               self.inputs: batch_images, self.z: batch_z})
                 self.writer.add_summary(summary_str, counter)
 
                 # Run g_optim twice to make sure that d_loss does not go to
                 # zero (different from paper)
                 _, summary_str = self.sess.run([g_optim, self.g_sum], feed_dict={
-                                               self.inputs: batch_images, self.z: batch_z, self.y: batch_labels})
+                                               self.inputs: batch_images, self.z: batch_z})
                 self.writer.add_summary(summary_str, counter)
 
                 errD_fake = self.d_loss_fake.eval(
-                    {self.inputs: batch_images, self.z: batch_z, self.y: batch_labels})
+                    {self.inputs: batch_images, self.z: batch_z})
                 errD_real = self.d_loss_real.eval(
-                    {self.inputs: batch_images, self.z: batch_z, self.y: batch_labels})
+                    {self.inputs: batch_images, self.z: batch_z})
                 errG = self.g_loss.eval(
-                    {self.inputs: batch_images, self.z: batch_z, self.y: batch_labels})
+                    {self.inputs: batch_images, self.z: batch_z})
 
                 counter += 1
                 print(
@@ -247,7 +224,6 @@ class GAN(object):
                             feed_dict={
                                 self.z: sample_z,
                                 self.inputs: sample_inputs,
-                                self.y: sample_labels,
                             },
                         )
                         save_images(
@@ -260,20 +236,6 @@ class GAN(object):
                         print("one pic error!...")
                 if np.mod(counter, 500) == 2:
                     self.save(config.checkpoint_dir, counter)
-
-    def load_labels(self):
-        labels = sio.loadmat('imagelabels.mat')
-        labels = labels['labels']
-        labels = labels.T
-
-        seed = 547
-        np.random.seed(seed)
-        np.random.shuffle(labels)
-
-        labels = labels / 51 - 1
-        labels = np.asarray(labels)
-
-        return labels
 
     @property
     def model_dir(self):

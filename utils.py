@@ -8,6 +8,7 @@ import random
 import pprint
 import scipy.misc
 import numpy as np
+import scipy.io as sio
 from time import gmtime, strftime
 from six.moves import xrange
 
@@ -106,19 +107,11 @@ def inverse_transform(images):
 def visualize(sess, gan, config):
     image_frame_dim_h = 8
     image_frame_dim_w = 8
-    values = np.arange(0, 1, 1. / config.batch_size)
+
     for idx in xrange(100):
         print(" [*] %d" % idx)
-        z_sample = np.zeros([config.batch_size, gan.z_dim])
-        for kdx, z in enumerate(z_sample):
-            z[idx] = values[kdx]
-
-        y = np.random.choice(102, (config.batch_size, 1))
-        y = y / 51 - 1
-        y = np.asarray(y)
-
-        samples = sess.run(gan.sampler, feed_dict={
-                           gan.z: z_sample, gan.y: y})
+        z_sample = np.random.uniform(-1, 1, size=(gan.sample_num, gan.z_dim))
+        samples = sess.run(gan.sampler, feed_dict={gan.z: z_sample})
 
         save_images(samples, [image_frame_dim_h, image_frame_dim_w],
                     './samples/test_arange_%s.png' % (idx))

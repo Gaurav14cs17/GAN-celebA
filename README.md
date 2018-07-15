@@ -1,5 +1,21 @@
 # GAN-celebA
 Tensorflow implementation of GAN in Dataset CelebA.
+
+## Model architecture
+Generator|Discriminator
+---------|-------------
+z,256|x,128\*128\*3
+fc,8\*8\*256,BN|5\*5 conv,64,st.2
+5\*5 deconv,256,st.2,BN|5\*5 conv,128,st.2,BN
+5\*5 deconv,256,st.1,BN|5\*5 conv,256,st.2,BN
+5\*5 deconv,256,st.2,BN|5\*5 conv,512,st.2,BN
+5\*5 deconv,256,st.1,BN|fc,1024
+5\*5 deconv,128,st.2,BN|fc,1
+5\*5 deconv,64,st.2,BN|cross entropy loss
+5\*5 deconv,3,st.1|
+l2 loss|
+
+
 ## Prerequisites
 
 - Python 3.3+
@@ -18,6 +34,12 @@ To test with an existing model:
  ```
 
 ## Results
+After 10th epoch:
+![result1]()
+After 20th epoch:
+![result1]()
+After 30th epoch:
+![result1]()
 
 
 ## Folder structure
@@ -38,3 +60,5 @@ The following shows basic folder structure.
 └── checkpoint # model files to be saved here
 ```
 
+## Author
+Cong Yu / [@congyucn](https://github.com/congyucn)

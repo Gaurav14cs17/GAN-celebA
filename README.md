@@ -1,5 +1,5 @@
 # GAN-celebA
-Tensorflow implementation of GAN in Dataset CelebA.
+Tensorflow implementation of GAN in Dataset [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html).
 
 ## Model architecture
 Generator|Discriminator
@@ -15,6 +15,8 @@ fc,8\*8\*256,BN|5\*5 conv,64,st.2
 5\*5 deconv,3,st.1|
 l2 loss|
 
+## Loss functions
+![loss functions](assets/loss_functions.png)
 
 ## Prerequisites
 

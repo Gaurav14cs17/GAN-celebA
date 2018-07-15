@@ -1,1 +1,1 @@
-# GAN-102CategoryFlower
+# GAN-celebA

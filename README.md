@@ -5,7 +5,7 @@ Tensorflow implementation of GAN in Dataset [CelebA](http://mmlab.ie.cuhk.edu.hk
 ## Model architecture
 
 Generator|Discriminator
----------|-------------
+|:---------:|:-------------:|
 z, 256|x, 128\*128\*3
 fc, 8\*8\*256, BN|5\*5 conv, 64, st.2
 5\*5 deconv, 256, st.2, BN|5\*5 conv, 128, st.2, BN

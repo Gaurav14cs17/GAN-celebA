@@ -1,6 +1,6 @@
 # GAN-celebA
 
-Tensorflow implementation of GAN in Dataset [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html).
+Tensorflow implementation of GAN on Dataset [CelebA](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html).
 
 ## Model architecture
 

@@ -55,7 +55,6 @@ Details of the loss of Discriminator and Generator.
 
 ![g_loss](results/g_loss.png)
 
-
 ## Folder structure
 
 The following shows basic folder structure.
@@ -74,6 +73,10 @@ The following shows basic folder structure.
 ├── logs # log files for tensorboard to be saved here
 └── checkpoint # model files to be saved here
 ```
+
+## Acknowledgements
+
+This implementation has been based on [this repository](https://github.com/carpedm20/DCGAN-tensorflow) and tested with Tensorflow 1.4.0 on Ubuntu 16.04(GeForce GTX 1080 Ti).
 
 ## Author
 

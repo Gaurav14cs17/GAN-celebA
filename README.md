@@ -47,6 +47,14 @@ After 1th epoch|After 20th epoch
 |:-------------:|:--------------:|
 ![result1](results/train_01_0034.png)|![result20](results/train_20_0099.png)
 
+## Training details
+
+Details of the loss of Discriminator and Generator.
+
+![d_loss](results/d_loss.png)
+
+![g_loss](results/g_loss.png)
+
 
 ## Folder structure
 

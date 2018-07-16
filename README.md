@@ -43,9 +43,9 @@ To test with an existing model:
 
 ## Results
 
-After 10th epoch|After 20th epoch
+After 1th epoch|After 20th epoch
 |:-------------:|:--------------:|
-![result1](results/train_10_0049.png)|![result10](results/train_20_0099.png)
+![result1](results/train_01_0034.png)|![result20](results/train_20_0099.png)
 
 
 ## Folder structure

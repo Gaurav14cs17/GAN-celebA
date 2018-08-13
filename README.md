@@ -80,4 +80,4 @@ This implementation has been based on [this repository](https://github.com/carpe
 
 ## Author
 
-Cong Yu / [@congyucn](https://github.com/congyucn)
+Cong Yu / [@congyucn](https://congyucn.github.io/)

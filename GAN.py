@@ -86,14 +86,14 @@ class GAN(object):
         """loss function"""
         # d_loss
         self.d_loss_real = tf.reduce_mean(
-            sigmoid_cross_entropy_with_logits(self.D_real_logits - tf.reduce_mean(self.D_fake_logits), tf.ones_like(self.D_real)))
+            tf.square(self.D_real_logits - tf.reduce_mean(self.D_fake_logits) - 1))
         self.d_loss_fake = tf.reduce_mean(
-            sigmoid_cross_entropy_with_logits(self.D_fake_logits - tf.reduce_mean(self.D_real_logits), tf.zeros_like(self.D_fake)))
-        self.d_loss = self.d_loss_real + self.d_loss_fake
+            tf.square(self.D_fake_logits - tf.reduce_mean(self.D_real_logits) + 1))
+        self.d_loss = (self.d_loss_real + self.d_loss_fake) / 2
 
         # g_loss
-        self.g_loss = tf.square(tf.reduce_mean(
-            self.D_fake_logits) - tf.reduce_mean(self.D_real_logits))
+        self.g_loss = (tf.reduce_mean(tf.square(self.D_fake_logits - tf.reduce_mean(self.D_real_logits))) / 2 +
+                       tf.reduce_mean(tf.square(self.D_real_logits - tf.reduce_mean(self.D_fake_logits))) / 2)
 
         """data visualization"""
         self.z_sum = histogram_summary("z", self.z)
